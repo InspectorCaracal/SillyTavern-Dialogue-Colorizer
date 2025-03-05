@@ -51,7 +51,9 @@ export const ColorizeSourceType = {
 export const ColorizeTargetType = {
     QUOTED_TEXT: 1 << 0,
     BUBBLES: 1 << 1,
-    QUOTED_TEXT_AND_BUBBLES: (1 << 0) | (1 << 1)
+    MES_UI: 1 << 2,
+    QUOTED_TEXT_AND_BUBBLES: (1 << 0) | (1 << 1),
+    ALL_ELEMS: (1 << 0) | (1 << 1) | (1 << 2)
 };
 
 /**
@@ -83,8 +85,8 @@ let personasStyleSheet;
  */
 async function getCharStyleString(stChar) {
     let styleHtml = "";
+    const charDialogueColor = await getCharacterDialogueColor(stChar);
     if ((extSettings.colorizeTargets & ColorizeTargetType.QUOTED_TEXT) === ColorizeTargetType.QUOTED_TEXT) {
-        const charDialogueColor = await getCharacterDialogueColor(stChar);
         if (charDialogueColor) {
             styleHtml += `
                 .mes[xdc-author_uid="${stChar.uid}"] .mes_text q {
@@ -101,6 +103,18 @@ async function getCharStyleString(stChar) {
                     background-color: #${charBubbleColor.toHex()} !important;
                     border-color: #${charBubbleColor.toHex()} !important;
                 }
+            `;
+        }
+    }
+    if ((extSettings.colorizeTargets & ColorizeTargetType.MES_UI) === ColorizeTargetType.MES_UI) {
+        if (charDialogueColor) {
+            styleHtml += `
+                .mes[xdc-author_uid="${stChar.uid}"] .name_text,
+                .mes[xdc-author_uid="${stChar.uid}"] .mes_button,
+                .mes[xdc-author_uid="${stChar.uid}"] .extraMesButtons > div {
+                    color: #${charDialogueColor.toHex()} !important;
+                }
+
             `;
         }
     }

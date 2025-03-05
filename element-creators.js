@@ -4,9 +4,9 @@ import { linkInputColorTextPicker } from "./utils.js";
 /** @typedef {{value: any, text: string, description: string}} DropdownOptionObject */
 
 /**
- * 
- * @param {string} templateId 
- * @param {boolean?} deep 
+ *
+ * @param {string} templateId
+ * @param {boolean?} deep
  * @returns {DocumentFragment}
  */
 export function createTemplateClone(templateId, deep) {
@@ -15,9 +15,9 @@ export function createTemplateClone(templateId, deep) {
 }
 
 /**
- * @param {(textboxValue: string) => string?} textboxValueProcessor 
- * @param {(colorHex: string) => void} onColorChanged 
- * @returns 
+ * @param {(textboxValue: string) => string?} textboxValueProcessor
+ * @param {(colorHex: string) => void} onColorChanged
+ * @returns
  */
 export function createColorTextPickerCombo(textboxValueProcessor, onColorChanged) {
     const textInput = document.createElement('input');
@@ -42,9 +42,9 @@ export function createColorTextPickerCombo(textboxValueProcessor, onColorChanged
 }
 
 /**
- * 
+ *
  * @param {string} id The ID to set on the created elements.
- * @param {DropdownOptionObject[]} optionObjects 
+ * @param {DropdownOptionObject[]} optionObjects
  * @param {string=} labelText The string for the label.
  * @param {string=} description The help text for the label and contents.
  * @param {((event: Event) => void)=} onChangedCallback The 'onchange' callback to add to the dropdown.
@@ -81,7 +81,7 @@ export function createDropdownWithLabel(id, optionObjects, labelText, descriptio
 }
 
 /**
- * 
+ *
  * @param {string} id The ID to set on the created elements.
  * @param {((event: Event) => void)=} onChangedCallback The 'onchange' callback to add to the dropdown.
  * @returns {HTMLDivElement} The div containing the label and dropdown.
@@ -89,18 +89,18 @@ export function createDropdownWithLabel(id, optionObjects, labelText, descriptio
 export function createColorSourceDropdown(id, onChangedCallback) {
     const options = [
         {
-            value: ColorizeSourceType.AVATAR_VIBRANT, 
-            text: "Avatar Vibrant", 
+            value: ColorizeSourceType.AVATAR_VIBRANT,
+            text: "Avatar Vibrant",
             description: "Use a vibrant color dynamically calculated from the character's avatar."
         },
         {
-            value: ColorizeSourceType.STATIC_COLOR, 
-            text: "Static Color", 
+            value: ColorizeSourceType.STATIC_COLOR,
+            text: "Static Color",
             description: "Use a specified static color."
         },
         {
-            value: ColorizeSourceType.CHAR_COLOR_OVERRIDE, 
-            text: "Per-Character Only", 
+            value: ColorizeSourceType.CHAR_COLOR_OVERRIDE,
+            text: "Per-Character Only",
             description: "Use the default quote color except for characters with a specified override color."},
     ];
 
@@ -108,7 +108,7 @@ export function createColorSourceDropdown(id, onChangedCallback) {
 }
 
 /**
- * 
+ *
  * @param {string} id The ID to set on the created elements.
  * @param {((event: Event) => void)=} onChangedCallback The 'onchange' callback to add to the dropdown.
  * @returns {HTMLDivElement} The div containing the label and dropdown.
@@ -117,20 +117,30 @@ export function createColorTargetDropdown(id, onChangedCallback) {
     /** @type {DropdownOptionObject[]} */
     const options = [
         {
-            value: ColorizeTargetType.BUBBLES, 
-            text: "Chat Bubbles", 
-            description: "Color the chat bubbles. Only works with the 'Bubbles' chat style." 
+            value: ColorizeTargetType.BUBBLES,
+            text: "Chat Bubbles",
+            description: "Color the chat bubbles. Only works with the 'Bubbles' chat style."
         },
         {
-            value: ColorizeTargetType.QUOTED_TEXT, 
-            text: "Quoted Text", 
-            description: "Color quoted text." 
+            value: ColorizeTargetType.QUOTED_TEXT,
+            text: "Quoted Text",
+            description: "Color quoted text."
         },
         {
-            value: ColorizeTargetType.QUOTED_TEXT_AND_BUBBLES, 
-            text: "All", 
-            description: "Color both chat bubbles and quoted text." 
+            value: ColorizeTargetType.MES_UI,
+            text: "UI Elements",
+            description: "Color the character name and message actions."
         },
+        {
+            value: ColorizeTargetType.QUOTED_TEXT_AND_BUBBLES,
+            text: "All Dialogue",
+            description: "Color both chat bubbles and quoted text."
+        },
+        {
+            value: ColorizeTargetType.ALL_ELEMS,
+            text: "All",
+            description: "Color all colorable elements."
+        }
     ];
 
     return createDropdownWithLabel(id, options, "Color Targets", "Which elements to color.", onChangedCallback);
