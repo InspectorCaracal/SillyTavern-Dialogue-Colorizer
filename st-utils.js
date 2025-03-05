@@ -9,7 +9,7 @@ import { STCharacter, CharacterType } from "./STCharacter.js";
 export const expEventSource = new EventEmitter();
 export const exp_event_type = {
     /**
-     * Emitted when the character card panel is changed to a different character. 
+     * Emitted when the character card panel is changed to a different character.
      * Receives an {@linkcode STCharacter} object representing the newly-selected character.
      * @param {STCharacter} character An object representing the new character.
      */
@@ -21,13 +21,13 @@ export const exp_event_type = {
      */
     PERSONA_ADDED: "persona_added",
     /**
-     * Emitted when a persona is removed from the DOM. 
+     * Emitted when a persona is removed from the DOM.
      * Receives an {@linkcode STCharacter} object representing the removed persona.
      * @param {STCharacter} persona An object representing the removed persona.
      */
     PERSONA_REMOVED: "persona_removed",
     /**
-     * Emitted when the user changes persona. 
+     * Emitted when the user changes persona.
      * Receives an {@linkcode STCharacter} object representing the newly-selected persona.
      * @param {STCharacter} persona An object representing the selected persona.
      */
@@ -47,9 +47,9 @@ export const exp_event_type = {
 };
 
 /**
- * 
- * @param {MutationRecord[]} mutationList 
- * @param {MutationObserver} observer 
+ *
+ * @param {MutationRecord[]} mutationList
+ * @param {MutationObserver} observer
  */
 function onCharCardChanged(mutationList, observer) {
     for (const mutation of mutationList) {
@@ -66,9 +66,9 @@ function onCharCardChanged(mutationList, observer) {
 }
 
 /**
- * 
- * @param {MutationRecord[]} mutationList 
- * @param {MutationObserver} observer 
+ *
+ * @param {MutationRecord[]} mutationList
+ * @param {MutationObserver} observer
  */
 function onPersonasChanged(mutationList, observer) {
     for (const mutation of mutationList) {
@@ -77,7 +77,7 @@ function onPersonasChanged(mutationList, observer) {
             if (!target.classList.contains("selected")) {
                 continue;
             }
-            
+
             const stChar = getSTCharFromAvatarElem(target);
             if (!stChar) {
                 continue;
@@ -130,9 +130,9 @@ function onPersonasChanged(mutationList, observer) {
 }
 
 /**
- * 
- * @param {MutationRecord[]} mutationList 
- * @param {MutationObserver} observer 
+ *
+ * @param {MutationRecord[]} mutationList
+ * @param {MutationObserver} observer
  */
 function onChatChanged(mutationList, observer) {
     for (const mutation of mutationList) {
@@ -145,7 +145,7 @@ function onChatChanged(mutationList, observer) {
 
             expEventSource.emit(exp_event_type.MESSAGE_REMOVED, removedNode);
         }
-        
+
         for (const addedNode of mutation.addedNodes) {
             if (!(addedNode instanceof HTMLElement)) {
                 continue;
@@ -199,7 +199,7 @@ chatObserver.observe(elemChat, chatObserverConfig);
 
 /**
  * Returns a value indicating whether the user is currently in any chat.
- * 
+ *
  * @returns {boolean}
  */
 export function isInAnyChat() {
@@ -208,7 +208,7 @@ export function isInAnyChat() {
 
 /**
  * Returns a value indicating whether the user is currently in a user-to-character chat.
- * 
+ *
  * @returns {boolean}
  */
 export function isInCharacterChat() {
@@ -217,7 +217,7 @@ export function isInCharacterChat() {
 
 /**
  * Returns a value indicating whether the user is currently in a group chat.
- * 
+ *
  * @returns {boolean}
  */
 export function isInGroupChat() {
@@ -226,7 +226,7 @@ export function isInGroupChat() {
 
 /**
  * Gets all characters as a list of {@linkcode STCharacter} objects.
- * 
+ *
  * @returns {STCharacter[]}
  */
 export function getAllCharacters() {
@@ -237,7 +237,7 @@ export function getAllCharacters() {
 
 /**
  * Gets all of the user's personas as a list of {@linkcode STCharacter} objects.
- * 
+ *
  * @returns {STCharacter[]}
  */
 export function getAllPersonas() {
@@ -256,7 +256,7 @@ export function getCurrentPersona() {
 
 /**
  * Gets the current chat character as an {@linkcode STCharacter}.
- * 
+ *
  * @returns {STCharacter?} The current character, or `null` if not currently in a user-to-character chat.
  */
 export function getCurrentCharacter() {
@@ -271,7 +271,7 @@ export function getCurrentCharacter() {
 
 /**
  * Gets the character members in the current group chat as a list of {@linkcode STCharacter} objects.
- * 
+ *
  * @returns {STCharacter[]?} An array containing the characters in the current group chat, or `null` if not currently in a group chat.
  */
 export function getCurrentGroupCharacters() {
@@ -289,7 +289,7 @@ const avatarUrlPole = document.getElementById("avatar_url_pole");
 /**
  * Gets the character that is currently being or was last edited. This is not necessarily the current character,
  * as a character's card can be edited from a group chat.
- * 
+ *
  * @returns {STCharacter}
  */
 export function getCharacterBeingEdited() {
@@ -298,8 +298,8 @@ export function getCharacterBeingEdited() {
 
 /**
  * Gets the author of the given message as an {@link STCharacter}.
- * 
- * @param {HTMLElement} message 
+ *
+ * @param {HTMLElement} message
  * @returns {STCharacter?} The author of the message, or `null` if the author couldn't be determined.
  */
 export function getMessageAuthor(message) {
@@ -309,7 +309,8 @@ export function getMessageAuthor(message) {
 
     const isUser = message.getAttribute("is_user") === "true";
     // workaround for bug(?) in ST ('/sys {msg}' does not set 'is_system' attr to 'true')
-    const isSystem = message.getAttribute("is_system") === "true" || avatarThumbSrc === STCharacter.System.avatarImageThumbnailFilePath;
+    // 'is_system' is not used for system messages, but hidden comments
+    const isSystem = avatarThumbSrc === STCharacter.System.avatarImageThumbnailFilePath;
 
     /** @type {CharacterType} */
     let charType;
